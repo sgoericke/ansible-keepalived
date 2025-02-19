@@ -1,5 +1,5 @@
-- name: Prepare Ubuntu hosts
-  hosts: ubuntu
+- name: Prepare debian hosts
+  hosts: debian
   remote_user: vagrant
   become: true
   gather_facts: true

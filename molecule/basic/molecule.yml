@@ -5,44 +5,30 @@ driver:
     name: virtualbox
     type: virtualbox
     options:
-      memory: 384
+      memory: 512
       cpus: 1
 platforms:
-  # 20.04
-  - name: keepalived-ubuntu-focal
-    box: ubuntu/focal64
+  - name: keepalived-node1
+    box: debian/bookworm64
     interfaces:
       - auto_config: true
         network_name: private_network
         type: static
         ip: 192.168.56.10
     groups:
-      - ubuntu
+      - debian
       - keepalived
-  # 22.04
-  - name: keepalived-ubuntu-jammy
-    box: ubuntu/jammy64
+  - name: keepalived-node2
+    box: debian/bookworm64
     interfaces:
       - auto_config: true
         network_name: private_network
         type: static
         ip: 192.168.56.20
     groups:
-      - ubuntu
+      - debian
       - keepalived
-  # 24.04 is not officially provided anymore
-  - name: keepalived-ubuntu-noble
-    box: alvistack/ubuntu-24.04
-    memory: 512
-    cpus: 1
-    interfaces:
-      - auto_config: true
-        network_name: private_network
-        type: static
-        ip: 192.168.56.30
-    groups:
-      - ubuntu
-      - keepalived
+
 provisioner:
   name: ansible
   connection_options:
