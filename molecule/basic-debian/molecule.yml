@@ -2,10 +2,10 @@
 driver:
   name: vagrant
   provider:
-    name: virtualbox
-    type: virtualbox
+    name: libvirt
+    type: libvirt
     options:
-      memory: 512
+      memory: 1024
       cpus: 1
 platforms:
   - name: node1
@@ -14,7 +14,7 @@ platforms:
       - auto_config: true
         network_name: private_network
         type: static
-        ip: 192.168.56.10
+        ip: 192.168.156.10
     groups:
       - debian
       - keepalived
@@ -25,11 +25,11 @@ platforms:
       - auto_config: true
         network_name: private_network
         type: static
-        ip: 192.168.56.20
+        ip: 192.168.156.20
     groups:
       - debian
       - keepalived
-  
+
 provisioner:
   name: ansible
   connection_options:

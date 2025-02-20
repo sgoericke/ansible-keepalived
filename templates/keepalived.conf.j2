@@ -175,7 +175,6 @@ vrrp_instance {{ name }} {
   {% if instance.native_ipv6 is defined and instance.native_ipv6 | bool %}
   native_ipv6
   {% endif %}
-
   {% if instance.authentication_password is defined %}
   authentication {
     auth_type {{ instance.authentication_type | default('PASS') }}
@@ -246,7 +245,6 @@ vrrp_instance {{ name }} {
     {% endfor %}
   }
   {% endif %}
-
   {% if instance.notify_script is defined %}
   notify "{{ instance.notify_script }}"
   {% endif %}
@@ -285,7 +283,6 @@ virtual_server {{ vserver.ip }} {{ vserver.port }} {
   {% if vserver.sorry_server is defined %}
   sorry_server {{ vserver.sorry_server.ip }} {{ vserver.sorry_server.port }}
   {% endif %}
-
 }
 {% endfor %}
 {% endif %}

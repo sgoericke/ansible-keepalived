@@ -5,8 +5,18 @@
   {% if vserver.delay_loop is defined %}
   delay_loop {{ vserver.delay_loop }}
   {% endif %}
+  {% if vserver.lvs_sched is defined %}
   lvs_sched {{ vserver.lvs_sched | default ('rr') }}
+  {% endif %}
+  {% if vserver.lvs_method is defined %}
   lvs_method {{ vserver.lvs_method | default ('DR') }}
+  {% endif %}
+  {% if vserver.lb_algo is defined %}
+  lb_algo {{ vserver.lb_algo | default ('rr') }}
+  {% endif %}
+  {% if vserver.lb_algo is defined %}
+  lb_kind {{ vserver.lb_kind | default ('DR') }}
+  {% endif %}
   {% if vserver.quorum is defined and vserver.quorum | int %}
   quorum {{ vserver.quorum }}
   {% endif %}

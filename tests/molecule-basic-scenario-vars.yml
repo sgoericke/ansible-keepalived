@@ -20,16 +20,53 @@
 # In your own environment, you should probably
 # have your own group/host vars to define the content
 # of the necessary keepalived variables.
+keepalived_show_ansible_managed: true
+
+keepalived_global_defs:
+  - enable_script_security 2
+  - script_user root
 
 keepalived_instances:
   internal:
     interface: "{{ vrrp_nic | default(ansible_default_ipv4.interface, true) }}"
     # You can also use your own variable to determine which node is master and who
     state: "{{ (groups['keepalived'].index(inventory_hostname) == 0) | ternary('MASTER','BACKUP') }}"
-    virtual_router_id: "{{ vrrp_id | default(42) }}"
+    virtual_router_id: "{{ vrrp_id | default(52) }}"
     # I advise you to define your own priority per node, instead of a generic all or nothing.
     # Especially if you have more than two nodes.
     priority: "{{ (inventory_hostname == groups['keepalived'][0]) | ternary('200', '100') }}"
     # Do not forget to define the VIPs, and their CIDR.
     vips:
-      - "{{ vrrp_ip | default('192.168.56.2/24') }} dev {{ vrrp_nic | default(ansible_default_ipv4.interface, true) }}"
+      - "{{ vrrp_ip | default('192.168.56.2') }}"
+
+    track_scripts:
+      - check_haproxy
+
+keepalived_scripts:
+  check_haproxy:
+    check_script: "systemctl is-active --quiet haproxy"
+    interval: 2
+    weight: 2
+
+keepalived_virtual_servers:
+  - ip: 10.37.37.97
+    port: 34159
+    protocol: UDP
+    delay_loop: 5
+    lb_algo: wrr
+    lb_kind: DR
+
+    real_servers:
+      - ip: 10.10.20.123
+        port: 34159
+        weight: 1
+        tcp_checks:
+          - connect_timeout: 3
+            connect_port: 4059
+
+      - ip: 10.20.20.123
+        port: 34159
+        weight: 1
+        tcp_checks:
+          - connect_timeout: 3
+            connect_port: 4059
