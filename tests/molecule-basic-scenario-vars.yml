@@ -20,7 +20,10 @@
 # In your own environment, you should probably
 # have your own group/host vars to define the content
 # of the necessary keepalived variables.
-keepalived_show_ansible_managed: true
+ansible_managed_comment: |
+  This file is managed by Ansible.
+  Do NOT edit manually!
+  Generated on {{ ansible_date_time.date }} {{ ansible_date_time.time }}
 
 keepalived_global_defs:
   - enable_script_security 2
